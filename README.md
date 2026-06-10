@@ -16,7 +16,7 @@ El dataset final (`ladb_mobility_economy_2024_clean.csv`) integra datos de tráf
 
 Haz clic en el siguiente botón:
 
-[![Open In Colab]https://colab.research.google.com/github/imjesusgarcia/mobility_economy_project_student/blob/main/S5_ladb_mobility_economy_project_student.ipynb 
+[![Open In_Colab] https://colab.research.google.com/github/imjesusgarcia/mobility_economy_project_student/blob/main/S5_ladb_mobility_economy_project_student.ipynb 
 
 O:
 
