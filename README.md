@@ -1,64 +1,111 @@
-# Mobility & Economy Analysis 2024
+# Proyecto 5 — Movilidad Urbana y Productividad Económica en Latinoamérica
 
-Este repositorio contiene el análisis de movilidad urbana e indicadores económicos realizado con datos de TomTom Traffic y OECD para el año 2024.
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/imjesusgarcia/Student-Version-Project-LADB/blob/main/S5_ladb_mobility_economy_project_student__1_.ipynb)
 
-El dataset final (`ladb_mobility_economy_2024_clean.csv`) integra datos de tráfico e indicadores económicos de 15 ciudades latinoamericanas, permitiendo explorar la relación entre congestión vehicular y productividad urbana.
+## Descripción
 
-## 📂 Contenido del repositorio
+Análisis de la relación entre **movilidad urbana** y **productividad económica** en las principales ciudades latinoamericanas durante 2024, basado en datos reales de TomTom Traffic Index y OECD Cities.
 
-- `notebooks/mobility_economy_analysis.ipynb`  
-  → Notebook principal con carga, limpieza, EDA, visualizaciones y conclusiones.
+**Pregunta central:**
+> ¿Qué relación existe entre la congestión vehicular y el PIB per cápita en ciudades latinoamericanas, y en qué ciudades conviene invertir en infraestructura de transporte?
 
-- `ladb_mobility_economy_2024_clean.csv`  
-  → Dataset final exportado con 15 ciudades y 15 columnas limpias.
+---
 
-## ▶ Cómo abrir el notebook en Google Colab
+## Datasets
 
-Haz clic en el siguiente botón:
+| Archivo | Fuente | Descripción |
+|---|---|---|
+| `tomtom_traffic.csv` | TomTom Traffic Index | Indicadores de tráfico y congestión por ciudad |
+| `oecd_city_economy.csv` | OECD Cities | Indicadores económicos: PIB per cápita, desempleo, contaminación, población |
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/imjesusgarcia/mobility_economy_project_student/blob/main/S5_ladb_mobility_economy_project_student.ipynb)
+### Variables clave
 
-O:
+| Variable | Descripción |
+|---|---|
+| `jamsdelay` | Retraso total por congestión (minutos) |
+| `trafficindexlive` | Índice de tráfico en tiempo real |
+| `minsdelay` | Minutos de retraso por cada 10 km |
+| `jamslengthinkms` | Longitud total de embotellamientos (km) |
+| `city_gdp_capita` | PIB per cápita en USD |
+| `unemployment_%` | Tasa de desempleo (%) |
+| `pm2.5_ug_m3` | Contaminación del aire (μg/m³) |
+| `population` | Población total de la ciudad |
 
-1. Abre el archivo `.ipynb` en GitHub  
-2. Haz clic en **Open in Colab**
+---
 
-## 📘 Cómo reproducir el análisis
+## Estructura del análisis
 
-1. Abre `notebooks/mobility_economy_analysis.ipynb`
-2. Ejecuta las celdas en orden
-3. El notebook carga los datasets desde:
-   - `/datasets/tomtom_traffic.csv`
-   - `/datasets/oecd_city_economy.csv`
+| Paso | Contenido |
+|---|---|
+| 1 — Carga y exploración | Importación de librerías, carga de los 2 datasets y vista previa |
+| 2 — Limpieza y preparación | Estandarización de nombres en snake_case, conversión de tipos, limpieza de separadores numéricos |
+| 3 — Extracción de año y filtrado | Extracción de la columna `year` desde fechas, filtrado a 2024 |
+| 4 — Resumen de movilidad | Promedios de tráfico por ciudad, país y año con `groupby` |
+| 5 — Unión de datasets | Merge INNER entre tráfico y economía por `city` y `year` |
+| 6 — Visualización | Boxplot de congestión, histograma de PIB, gráfico de barras comparativo |
+| 7 — Exportación | Generación del CSV limpio `ladb_mobility_economy_2024_clean.csv` |
 
-## 🧠 Objetivo del análisis
+---
 
-- Explorar la relación entre congestión vehicular y PIB per cápita en ciudades latinoamericanas
-- Integrar y limpiar datos de dos fuentes heterogéneas (TomTom + OECD)
-- Estandarizar columnas, tipos de datos y formatos numéricos
-- Calcular promedios anuales de tráfico por ciudad para análisis consolidado
-- Generar visualizaciones comparativas entre movilidad y economía
-- Identificar ciudades prioritarias para inversión en infraestructura de transporte
+## Limpieza de datos realizada
 
-## 📊 Datasets utilizados
+| Problema | Columna | Acción tomada |
+|---|---|---|
+| Columnas en formato no estándar | Todos los datasets | Renombrado a `snake_case` con `.str.lower()` y `.str.replace()` |
+| Fechas como `object` | `updatetimeutc`, `updatetimeutcweekago` | Conversión con `pd.to_datetime(errors='coerce')` |
+| Números con separadores de miles (`.`) | `city_gdp_capita` | Limpieza de puntos y conversión a `float` |
+| Porcentajes como texto (`%`) | `unemployment_%` | Eliminación del símbolo y conversión a `float` |
+| Decimales con coma | `pm2.5_ug_m3`, `population_m` | Reemplazo de `,` por `.` y conversión a `float` |
+| Población en millones | `population_m` | Creación de columna `population` multiplicada por 1,000,000 |
 
-| Dataset | Fuente | Registros | Descripción |
-|---|---|---|---|
-| `tomtom_traffic.csv` | TomTom | 1,004,464 | Índices de tráfico por ciudad y fecha |
-| `oecd_city_economy.csv` | OECD | 30 | PIB per cápita, desempleo, PM2.5 y población |
+---
 
-## 🌎 Ciudades y países incluidos
+## Cobertura del análisis
 
-7 países: Brasil, Colombia, Argentina, Perú, México, Uruguay y Chile  
-15 ciudades analizadas en el año 2024.
+- **Año analizado:** 2024
+- **Ciudades incluidas:** 15
+- **Países:** Brasil, Colombia, Argentina, Perú, México, Uruguay, Chile
 
-## 🔑 Hallazgos principales
+---
 
-- **Bogotá** presenta el mayor ratio congestión/productividad, posicionándose como ciudad prioritaria para inversión en infraestructura vial.
-- No se observa correlación lineal fuerte entre PIB per cápita y congestión: algunas ciudades con alta congestión mantienen PIB elevado, sugiriendo que la congestión puede ser consecuencia del crecimiento económico.
-- La distribución de `JamsDelay` muestra valores atípicos significativos (mediana ~250 min vs. promedio ~630 min), indicando que pocas ciudades con congestión extrema sesgan la media general.
+## Principales hallazgos
 
-## 🛠 Tecnologías utilizadas
+- **Ciudad con mayor congestión:** Ciudad de México lidera en `jamsdelay` promedio.
+- **Sin correlación lineal fuerte:** Las ciudades con alta congestión no necesariamente tienen bajo PIB per cápita; en algunos casos la congestión es consecuencia del crecimiento económico.
+- **Outliers en congestión:** Al menos una ciudad supera 4 veces el promedio general, sesgando las estadísticas (mediana ~250 min vs. promedio ~630 min).
+- **Ciudad prioritaria para inversión:** **Bogotá** presenta la mayor correlación entre altos niveles de congestión y bajo PIB per cápita, según el ratio congestión/productividad calculado frente a Lima y Buenos Aires.
+
+---
+
+## Recomendaciones
+
+- **Bogotá** es la ciudad prioritaria para inversión en infraestructura de transporte, dado su alto ratio congestión/PIB per cápita.
+- Segmentar el análisis en grupos de ciudades comparables antes de generalizar conclusiones.
+- Validar la calidad de los datos TomTom para las ciudades con valores extremos (posibles eventos extraordinarios en 2024: obras viales, desastres naturales, eventos masivos).
+- Complementar el análisis con datos longitudinales (más de un año) para identificar tendencias reales, no solo un corte temporal.
+
+---
+
+## Output generado
+
+| Archivo | Descripción |
+|---|---|
+| `ladb_mobility_economy_2024_clean.csv` | Dataset limpio y combinado listo para análisis posterior |
+
+---
+
+## Tecnologías utilizadas
 
 - Python 3
-- pandas · NumPy · Matplotlib · Seaborn
+- pandas
+- numpy
+- matplotlib
+- seaborn
+
+---
+
+## Cómo ejecutar el notebook
+
+1. Haz clic en el badge **Abrir en Colab** al inicio del README.
+2. Asegúrate de tener acceso a los datasets en la ruta `/datasets/`.
+3. Ejecuta las celdas en orden secuencial (Paso 1 → Paso 7).
