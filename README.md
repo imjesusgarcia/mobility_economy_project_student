@@ -1,4 +1,4 @@
-# Proyecto 5 — Movilidad Urbana y Productividad Económica en Latinoamérica
+# Movilidad Urbana y Productividad Económica en Latinoamérica
 
 [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/imjesusgarcia/Student-Version-Project-LADB/blob/main/S5_ladb_mobility_economy_project_student__1_.ipynb)
 
